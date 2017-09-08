@@ -22,8 +22,6 @@ if __name__ == "__main__":
     # inputfile, outputfile = sys.argv[1], sys.argv[2]
     # pre_process(inputfile, outputfile)
 
-    with open('/Users/lionel/Desktop/data/nlp/zhwiki_extracted/zhs_wiki', 'r') as file:
-        for line in file.readlines():
-            pass
+    pass
 
 

@@ -24,4 +24,4 @@ if __name__ == '__main__':
     # kd_tree = KDTree(array)
     # print(kd_tree.node)
 
-    sentenct = '<doc id="18" url="https://zh.wikipedia.org/wiki?curid=18" title="哲学">'
+    # sentenct = '<doc id="18" url="https://zh.wikipedia.org/wiki?curid=18" title="哲学">'

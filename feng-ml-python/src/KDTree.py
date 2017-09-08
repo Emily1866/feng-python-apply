@@ -1,6 +1,22 @@
+import math
 import numpy as np
 
-from src.MathUtils import MathUtils
+
+class MathUtils(object):
+    def __init__(self):
+        pass
+
+    def sigmod(self, x):
+        return 1.0 / (1.0 + math.exp(-x))
+
+    def sigmoid_derivative(self, x):
+        return x * (1 - x)
+
+    def compute_distance(self, a, b):
+        sum = 0.0
+        for i in range(len(a)):
+            sum += (a[i] - b[i]) * (a[i] - b[i])
+        return sum
 
 
 class KDTreeNode(object):
@@ -30,6 +46,7 @@ class KDTree(object):
         if m == 1:
             root = KDTreeNode(data_file[0], split)
             return root
+        # 找方差最大的维度
         for i in range(n):
             array_list = data_list[:, i]
             tmp_var = np.var(array_list).item()
@@ -69,6 +86,7 @@ class KDTree(object):
             else:
                 tmp_root = tmp_root.right
         min_distance = mathUtils.compute_distance(x, point)
+        print('1', min_distance)
         while node_list:
             back_point = node_list.pop()
             split = back_point.split
@@ -86,6 +104,7 @@ class KDTree(object):
                     if min_distance > current_distance:
                         min_distance = current_distance
                         nearest = tmp_root
+                    print("2", min_distance)
                 pass
             pass
 
@@ -100,4 +119,5 @@ if __name__ == '__main__':
     kd_tree.root = kd_tree.create_tree(array)
     mathUtils = MathUtils()
     x = [2.0, 4.5]
+    x = [2.2, 3.2]
     print(kd_tree.query(kd_tree.root, x))

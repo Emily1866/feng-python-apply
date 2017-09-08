@@ -1,4 +1,3 @@
-from src.MathUtils import MathUtils
 import numpy as np
 import pandas as pd
 
@@ -70,7 +69,7 @@ class BPNeuralNetWork(object):
                 x = X[i]
                 y = Y[i]
                 error += self.back_propagation(x, y, learn)
-            # print(error)
+                # print(error)
 
 
 if __name__ == '__main__':
