@@ -29,6 +29,9 @@ if __name__ == '__main__':
     data = [[0, 1 / float(2), 1, 0], [1 / 3.0, 0, 0, 1 / 2.0], [1 / 3.0, 0, 0, 1 / 2.0], [1 / 3.0, 1 / 2.0, 0, 0]]
     P = np.array(data)
     V = ['a', 'b', 'c', 'd']
-    x = np.array([1 / 4, 1 / 4, 1 / 4, 1 / 4])
+    x = np.array([1.0, 1.0, 1.0, 1.0])
+    pr = PageRank(P, V, x)
+    print(pr.page_rank())
+    x = np.array([1.0 / 4, 1.0 / 4, 1.0 / 4, 1.0 / 4])
     pr = PageRank(P, V, x)
     print(pr.page_rank())
