@@ -1,30 +1,30 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-import jieba.posseg as pseg
+import sys
 
+from decimal import Decimal
 from gensim.models import Doc2Vec
 
 if __name__ == '__main__':
     # check and process input arguments
-    # if len(sys.argv) < 3:
-    #     sys.exit(1)
-    # file, word = sys.argv[1:3]
+    if len(sys.argv) < 4:
+        sys.exit(1)
+    modelfile, dishfile, dishSimfile = sys.argv[1:4]
 
+    out = open(dishSimfile, 'w', encoding='utf-8')
 
-    model = Doc2Vec.load('../data/out1')
-
-    test_data = '价格便宜，味道也不错啊，服务态度也很好，尤其是那个鸳鸯雪豆腐特别好吃'
-    test_cut_raw = []
-    item = pseg.cut(test_data)
-    for k in list(item):
-        test_cut_raw.append(k.word)
-    print(test_cut_raw)
-    inferred_vector = model.infer_vector(test_cut_raw)
-    sims = model.docvecs.most_similar([inferred_vector], topn=1)
-    print(sims)
+    model = Doc2Vec.load(modelfile)
+    with open(dishfile, 'r', encoding='utf-8') as file:
+        for line in file.readlines():
+            sims = ""
+            try:
+                sims = model.docvecs.most_similar(line.strip(), topn=5)
+            except:
+                continue
+            out.write(line.strip() + ":")
+            for name, degree in sims:
+                out.write(name + ":" + Decimal(degree).quantize(Decimal('0.00')) + '\t')
+            out.write("\n")
+    out.close()
     # sims是一个tuples,(index_of_document, similarity)
-
-    # docvecs = Doc2Vec.load('../data/out2').docvecs
-    #
-    # print(docvecs.most_similar(1))

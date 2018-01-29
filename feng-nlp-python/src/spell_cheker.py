@@ -3,6 +3,7 @@
 # Author: lionel
 import re
 from collections import Counter
+import pandas as pd
 
 
 def words(text):
@@ -45,6 +46,39 @@ def edits2(word):
     return (e2 for e1 in edits1(word) for e2 in edits1(e1))
 
 
+def read_file(path):
+    dishes = []
+    with open(path, 'r', encoding='utf-8') as file:
+        for line in file.readlines():
+            dishes.append(line.strip())
+    return dishes
+
+
 if __name__ == '__main__':
-    print(edits1("speling"))
-    print(correction("speling"))
+    # print(edits1("speling"))
+    # print(correction("speling"))
+    # file1 = open("/tmp/1.csv", 'w', encoding='utf-8')
+    # data = pd.read_csv("/Users/lionel/Downloads/dish_statistic.csv", sep='\t')
+    # data.iloc[:, 1] = data.iloc[:, 1] / 198387851
+    # for item in data.values:
+    #     file.write(str(item[0]) + ':' + str(item[1]) + '\n')
+
+    # file = open("/tmp/1.csv", 'r', encoding='utf-8')
+    # for line in file.readlines():
+    #     print(line)
+    # file = open('/Users/lionel/Downloads/1.csv', 'r', encoding='utf-8')
+    # file.readline()
+    # for line in file.readlines():
+    #     if len(line.strip()) == 4:
+    #         file1.write(line.strip() + "\n")
+
+    dish2 = read_file("/Users/lionel/Desktop/len2.csv")
+    dish3 = read_file("/Users/lionel/Desktop/len3.csv")
+    file3 = open('/tmp/1.csv', 'w', encoding='utf-8')
+    dish4 = read_file("/Users/lionel/Desktop/len4.csv")
+    for item2 in dish2:
+        for item3 in dish3:
+            if item2 in item3:
+                continue
+            else:
+                file3.write(item3 + "\n")

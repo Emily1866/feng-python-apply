@@ -18,10 +18,9 @@ class MyDocs(object):
         try:
             for line in open(self.filename, 'rb'):
                 pieces = utils.to_unicode(line).split()
-                tag = pieces[0]
+                tags = pieces[0].split(',')
                 words = pieces[1].split(',')
-                print(type(words))
-                yield TaggedDocument(words, [tag])
+                yield TaggedDocument(words, tags)
         except:
             logging.info('e')
 
