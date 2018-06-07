@@ -2,19 +2,40 @@
 # -*- coding:utf-8 -*- 
 # Author: lionel
 
+import pandas as pd
+import tensorflow as tf
 
-import jieba.posseg as pseg
+TRAIN_URL = "http://download.tensorflow.org/data/iris_training.csv"
+TEST_URL = "http://download.tensorflow.org/data/iris_test.csv"
 
-out = open('/tmp/12.csv', 'w', encoding='utf-8')
-with open('/tmp/11.csv', 'r', encoding='utf-8') as f:
-    for line in f:
-        line = f.readline()
-        fields = line.split('\t')
-        if len(fields) != 3:
-            continue
-        content = fields[2].split('!')[1]
-        words = pseg.cut(content)
-        for word, flag in words:
-            if flag == 'a':
-                out.write(word + '\n')
-out.close()
+CSV_COLUMN_NAMES = ['SepalLength', 'SepalWidth',
+                    'PetalLength', 'PetalWidth', 'Species']
+SPECIES = ['Setosa', 'Versicolor', 'Virginica']
+
+
+def maybe_download():
+    train_path = tf.keras.utils.get_file(TRAIN_URL.split('/')[-1], TRAIN_URL)
+    test_path = tf.keras.utils.get_file(TEST_URL.split('/')[-1], TEST_URL)
+
+    return train_path, test_path
+
+
+def load_data(y_name='Species'):
+    """Returns the iris dataset as (train_x, train_y), (test_x, test_y)."""
+    train_path, test_path = maybe_download()
+
+    train = pd.read_csv(train_path, names=CSV_COLUMN_NAMES, header=0)
+    train_x, train_y = train, train.pop(y_name)
+
+    test = pd.read_csv(test_path, names=CSV_COLUMN_NAMES, header=0)
+    test_x, test_y = test, test.pop(y_name)
+
+    return (train_x, train_y), (test_x, test_y)
+
+
+if __name__ == "__main__":
+    (train_x, train_y), (test_x, test_y) = load_data()
+    print(train_x)
+    print(train_y)
+    print(type(train_x))
+    print(type(train_y))
