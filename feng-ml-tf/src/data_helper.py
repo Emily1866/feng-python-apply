@@ -23,6 +23,17 @@ def load_data(filename, sep=' ', sep1=',', isCharacter=False):
     return label_list, features_list
 
 
+def gen(filepath):
+    with tf.gfile.GFile(filepath, 'r') as f:
+        for line in f.readlines():
+            fields = line.strip().split(' ')
+            if len(fields) != 2:
+                continue
+            label = fields[0]
+            features = fields[1]
+            yield (label, features.split(','))
+
+
 def build_word_dic(words_list, label_list, vocab_size=5000):
     word_dic = dict()
     word_dic['pad'] = 0
@@ -51,6 +62,12 @@ def build_dic_hash_table(word_dic, label_dic):
     label_table = tf.contrib.lookup.HashTable(
         tf.contrib.lookup.KeyValueTensorInitializer(label_keys, label_values), -1)
     return word_table, label_table
+
+
+def train_input_fn(label_list, features_list, shuffle_size, batch_size):
+    dataset = tf.data.Dataset.from_tensor_slices((label_list, features_list))
+    dataset = dataset.shuffle(shuffle_size).repeat().batch(batch_size)
+    return dataset
 
 
 def build_table_from_text_file(filepath):
